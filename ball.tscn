@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://ositids48t4v"]
+
+[ext_resource type="Script" path="res://ball.gd" id="1_7fvy0"]
+[ext_resource type="AudioStream" uid="uid://c1stry6vq5oge" path="res://blip_1.wav" id="2_3a1qw"]
+[ext_resource type="AudioStream" uid="uid://dk6q2l3hegj7u" path="res://blip_2.wav" id="3_wlgu8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v12pb"]
+size = Vector2(8, 8)
+
+[node name="Ball" type="CharacterBody2D"]
+position = Vector2(320, 268)
+collision_layer = 4
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_7fvy0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_v12pb")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BlipSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_3a1qw")
+
+[node name="BlipSound2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_wlgu8")

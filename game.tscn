@@ -1,0 +1,134 @@
+[gd_scene load_steps=13 format=3 uid="uid://6h1228uu4wt7"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_bnlxa"]
+[ext_resource type="Texture2D" uid="uid://0fdlnejavcmx" path="res://background.png" id="1_mdmoy"]
+[ext_resource type="PackedScene" uid="uid://1q502bh5kolf" path="res://paddle.tscn" id="2_amnpe"]
+[ext_resource type="PackedScene" uid="uid://ositids48t4v" path="res://ball.tscn" id="3_lshwg"]
+[ext_resource type="AudioStream" uid="uid://g2v72y3shj6c" path="res://score.wav" id="5_4677f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lspja"]
+size = Vector2(576, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fil37"]
+size = Vector2(32, 8)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_148ce"]
+size = Vector2(100, 408)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihrf1"]
+size = Vector2(152, 68)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vftx"]
+size = Vector2(100, 408)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ms8pb"]
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_7y2iu"]
+font_size = 32
+
+[node name="Game" type="Node"]
+script = ExtResource("1_bnlxa")
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_mdmoy")
+centered = false
+
+[node name="WallTop" type="StaticBody2D" parent="Background"]
+position = Vector2(320, 68)
+collision_mask = 5
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Background/WallTop"]
+shape = SubResource("RectangleShape2D_lspja")
+
+[node name="WallBottom" type="StaticBody2D" parent="Background"]
+position = Vector2(320, 468)
+collision_mask = 5
+
+[node name="CollisionShape" type="CollisionShape2D" parent="Background/WallBottom"]
+shape = SubResource("RectangleShape2D_lspja")
+
+[node name="PlayerStop" type="StaticBody2D" parent="Background"]
+position = Vector2(0, -1)
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/PlayerStop"]
+position = Vector2(16, 69)
+shape = SubResource("RectangleShape2D_fil37")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Background/PlayerStop"]
+position = Vector2(624, 69)
+shape = SubResource("RectangleShape2D_fil37")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Background/PlayerStop"]
+position = Vector2(16, 469)
+shape = SubResource("RectangleShape2D_fil37")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Background/PlayerStop"]
+position = Vector2(624, 469)
+shape = SubResource("RectangleShape2D_fil37")
+
+[node name="EndZoneLeft" type="Area2D" parent="Background"]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/EndZoneLeft"]
+position = Vector2(-50, 268)
+shape = SubResource("RectangleShape2D_148ce")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Background/EndZoneLeft"]
+position = Vector2(-24, 30)
+shape = SubResource("RectangleShape2D_ihrf1")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Background/EndZoneLeft"]
+position = Vector2(-24, 506)
+shape = SubResource("RectangleShape2D_ihrf1")
+
+[node name="EndZoneRight" type="Area2D" parent="Background"]
+position = Vector2(660, 0)
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Background/EndZoneRight"]
+position = Vector2(28, 268)
+shape = SubResource("RectangleShape2D_3vftx")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Background/EndZoneRight"]
+position = Vector2(2, 30)
+shape = SubResource("RectangleShape2D_ihrf1")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Background/EndZoneRight"]
+position = Vector2(2, 506)
+shape = SubResource("RectangleShape2D_ihrf1")
+
+[node name="Player1" parent="." instance=ExtResource("2_amnpe")]
+position = Vector2(16, 268)
+
+[node name="Player2" parent="." instance=ExtResource("2_amnpe")]
+position = Vector2(624, 268)
+scale = Vector2(-1, 1)
+_player_id = 1
+
+[node name="Ball" parent="." instance=ExtResource("3_lshwg")]
+
+[node name="Player1Score" type="Label" parent="."]
+offset_left = 32.0
+offset_top = 19.0
+offset_right = 86.0
+offset_bottom = 64.0
+text = "000"
+label_settings = SubResource("LabelSettings_ms8pb")
+
+[node name="Player2Score" type="Label" parent="."]
+offset_left = 554.0
+offset_top = 19.0
+offset_right = 608.0
+offset_bottom = 64.0
+text = "000"
+label_settings = SubResource("LabelSettings_7y2iu")
+horizontal_alignment = 2
+
+[node name="ScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_4677f")
+
+[connection signal="body_entered" from="Background/EndZoneLeft" to="." method="_on_end_zone_left_body_entered"]
+[connection signal="body_entered" from="Background/EndZoneRight" to="." method="_on_end_zone_right_body_entered"]
